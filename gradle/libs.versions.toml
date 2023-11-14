@@ -39,6 +39,7 @@ datastore = '1.0.0'
 gson = '2.10'
 ezviz = '5.5'
 compose-image-viewer = '1.0.1'
+utils = '1.0.0'
 
 [libraries]
 compose-destinations-core = { module = "io.github.raamcosta.compose-destinations:core", version.ref = "compose-destinations" }
@@ -126,6 +127,11 @@ ezviz-sdk = { group = "io.github.ezviz-open", name = "ezviz-sdk", version.ref = 
 gson = { group = 'com.google.code.gson', name = 'gson', version.ref = 'gson' }
 
 imageviewer = { group = 'com.gitee.icris', name = 'compose-image-viewer', version.ref = 'compose-image-viewer'}
+utils-res = { group = 'com.gitee.icris.utils', name = 'res', version.ref = 'utils' }
+utils-nav = { group = 'com.gitee.icris.utils', name = 'nav', version.ref = 'utils' }
+
+#com.gitee.icris.utils:res:1.0.0
+#com.gitee.icris.utils:nav:1.0.0
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
@@ -157,6 +163,8 @@ coil = ['coil', 'coil-gif', 'coil-svg', 'coil-video']
 datastore = ['datastore-preferences']
 ezviz = ['ezviz-sdk', 'gson']
 #ezviz = ['ezviz-sdk', 'okhttp', 'gson']
+utils = ['utils-nav', 'utils-res']
+
 
 test = ["junit"]
 test-android = ["androidx-test-ext-junit", "espresso-core", "ui-test-junit4"]

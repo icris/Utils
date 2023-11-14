@@ -55,8 +55,10 @@ dependencies {
     implementation(platform(libs.compose.bom))
     api(libs.bundles.base)
 
-    implementation(project(":res"))
-    implementation(project(":nav"))
+    implementation(libs.bundles.utils)
+
+//    implementation(project(":res"))
+//    implementation(project(":nav"))
     ksp(libs.compose.destinations.ksp)
 
     api(libs.bundles.lifecycle)
