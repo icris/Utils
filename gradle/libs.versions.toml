@@ -56,7 +56,7 @@ hilt-kapt = { group = 'com.google.dagger', name = 'hilt-android-compiler', versi
 androidx-startup = { module = 'androidx.startup:startup-runtime', version.ref = "startup" }
 activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidx-activity" }
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
-compose-runtime = {group = 'androidx.compose.runtime', name = 'runtime-android', version = '1.5.4' }
+compose-runtime = {group = 'androidx.compose.runtime', name = 'runtime-android' }
 ui = { group = "androidx.compose.ui", name = "ui" }
 ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }

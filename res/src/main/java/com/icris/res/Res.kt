@@ -4,11 +4,14 @@ import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.currentCoroutineContext
@@ -55,15 +58,10 @@ class Res<T>(
         if (_data == null || isExpired) {
             withLoading {
                 val t = load()
-                if (t != null) {
-                    _data = t
-                    if (expireIn.isFinite()) {
-                        expiredAt = System.currentTimeMillis() + expireIn.inWholeMilliseconds
-                    }
-                } else {
-                    if (expireIn.isFinite()) {
-                        expiredAt = System.currentTimeMillis() + min(10000, expireIn.inWholeMilliseconds)
-                    }
+                if (t != null) _data = t
+                if (expireIn.isFinite()) {
+                    val l = expireIn.inWholeMilliseconds
+                    expiredAt = System.currentTimeMillis() + if (t == null) min(10000, l) else l
                 }
             }
         }
@@ -71,15 +69,16 @@ class Res<T>(
     }
     @Composable operator fun getValue(thisObj: Any?, property: KProperty<*>) = get()
 
-    @Composable
-    fun get(): T? {
+    @Composable fun get(): T? {
         if (autoReload && expireIn.isFinite()) {
             // 自动刷新
-            LaunchedEffect(expireIn) {
-                Log.d("TIME", "Here comes new challenger")
-                while (isActive) {
-                    realLoad()
-                    delay(delayTime)
+            val lifecycle = LocalLifecycleOwner.current
+            LaunchedEffect(this) {
+                lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    while (isActive) {
+                        realLoad()
+                        delay(delayTime)
+                    }
                 }
             }
         } else {
@@ -120,9 +119,9 @@ class Res<T>(
 }
 
 @Composable
-fun <T> StateFlow<Res<T>?>.get(): T? = collectAsState().value?.get()
+fun <T> StateFlow<Res<T>?>.get(): T? = collectAsStateWithLifecycle().value?.get()
 
-@Composable operator fun <T> StateFlow<Res<T>?>.getValue(thisObj: Any?, property: KProperty<*>): T? = collectAsState().value?.get()
+@Composable operator fun <T> StateFlow<Res<T>?>.getValue(thisObj: Any?, property: KProperty<*>): T? = collectAsStateWithLifecycle().value?.get()
 
 @Suppress("unused")
 @OptIn(ExperimentalCoroutinesApi::class)

@@ -39,10 +39,11 @@ android {
 
 dependencies {
 
-//    implementation(libs.core.ktx)
-    api(libs.compose.runtime)
-//    implementation(libs.appcompat)
-//    implementation(libs.material)
+    api(platform(libs.compose.bom))
+    api(libs.ui)
+    api(libs.lifecycle.runtime.compose)
+//    api(libs.lifecycle.runtime.ktx)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
